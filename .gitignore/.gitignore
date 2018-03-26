@@ -32,7 +32,6 @@ public class StDeviation {
     private double sdAve      = INVALID;
     private double sdVar      = INVALID;
     private double sdDev      = INVALID;
-    int m = INVALID;
 
     // ******************************************************************************
     // ******************************************************************************
@@ -40,25 +39,30 @@ public class StDeviation {
     // THERE ARE SEVERAL METHODS THAT WILL HAVE TO CHANGE IN THIS CLASS TO ALLOW THE
     // CALCULATION OF STANDARD DEVIATION USING THE FREQUENCY TABLE METHOD AS WELL.
     // PLEASE CONSIDER THE CHANGES THAT YOU WILL HAVE TO MAKE TO:
-    //   - addNewDataItem (precondition is that  calculation method is set)
+    //   - addNewDataItem (precondition is that calculation method is set)
     //   - calcAverage    (precondition is that data added, & calculation method is set)
     //   - calcVariance   (precondition is that average calculated, data added, & calculation method is set)
 
 
-    public void setCalcMethod(int how2calculate){
+    public void setCalcMethod(int how2calculate) {
 
         switch (how2calculate) {
-            case 'DISCRETE':
-                m = DISCRETE;
-            case 'FRQTABLE':
-                m = FRQTABLE;
-            case 'GROUPED':
-                m = GROUPED; 
+            case DISCRETE: {
+                calcMethod = how2calculate;
                 break;
-            default:
-                System.out.println("INVALID_CALC_METHOD");
-
+            }
+            case FRQTABLE: {
+                calcMethod = how2calculate;
+                break;
+            }
+            case GROUPED: {
+            }
+            default: {
+                calcMethod = INVALID_CALC_METHOD;
+                System.out.println("ERROR: Standard Deviation Method either UNIMPLEMENTED or UNKNOWN");
+            }
         }
+    }
         // You need to write the code to set the class variable here
         // you should use a switch/case statement that allows you to
         // check if "how2calculate" is DISCRETE, FRQTABLE, GROUPED, if
@@ -66,23 +70,36 @@ public class StDeviation {
         // INVALID_CALC_METHOD
 
 
-    }
-
     public int getCalcMethod(){
-        return m; 
+        return calcMethod;
     }
 
     public void setMin(int userMin){
-
+        switch (userMin) {
+            case DISCRETE: {
+                sdMinRange = *****************************************************
+                break;
+            }
+            case FRQTABLE: {
+                sdMinRange = MINDATA;
+                break;
+            }
+            default:
+                sdMinRange = INVALID_RANGE;
+                System.out.println("ERROR: Minimum is out of range");
+        }
     }
 
     public int getMin(){
+        return ;
     }
 
     public void setMax(int userMax){
+
     }
 
     public int getMax(){
+        return ;
     }
 
 
