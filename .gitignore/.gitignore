@@ -77,7 +77,7 @@ public class StDeviation {
     public void setMin(int userMin){
         switch (userMin) {
             case DISCRETE: {
-                sdMinRange = *****************************************************
+               // sdMinRange = *****************************************************
                 break;
             }
             case FRQTABLE: {
@@ -91,15 +91,27 @@ public class StDeviation {
     }
 
     public int getMin(){
-        return ;
+        return sdMinRange;
     }
 
-    public void setMax(int userMax){
-
+    public void setMax(int userMax) {
+        switch (userMax) {
+            case DISCRETE: {
+                sdMaxRange = MAXDATA;
+                break;
+            }
+            case FRQTABLE: {
+                sdMaxRange = MAXDATA;
+                break;
+            }
+            default:
+                sdMaxRange = INVALID_RANGE;
+                System.out.println("ERROR: Maximum is out of range");
+        }
     }
 
     public int getMax(){
-        return ;
+        return sdMaxRange;
     }
 
 
@@ -123,8 +135,51 @@ public class StDeviation {
             sdItems = 0;
         }
 
-        Data[sdItems] = dataItem;
-        sdItems++;
+        switch (getCalcMethod()){
+
+            case DISCRETE:{
+
+                Data[sdItems] = dataItem;
+                sdItems++;
+                break;
+            }
+
+            case FRQTABLE: {
+
+                if ((getMin() != INVALID_RANGE) && (getMax() != INVALID_RANGE)){
+
+                    if ((dataItem < getMin())|| (dataItem > getMax())){
+
+                        System.out.printf("ERROR: RANGE VIOLATION - Data Value ( %5.0 ), User Values: Minimum ( %5.0f ), Maxium ( %5.0f )",
+                                dataItem, (double) getMin(), (double) getMax());
+
+                    } else if ((dataItem < MINDATA) || (dataItem > MAXDATA)){
+
+                        System.out.printf("ERROR: RANGE VIOLATION - Data Value ( %5.0 ), System Values: DATAMIN ( %5.0f ), DATAMAX ( %5.0f )",
+                                dataItem, (double) MINDATA, (double) MAXDATA);
+
+                    } else {
+
+                        Data[dataItem] = Data[dataItem] + 1;
+                        sdItems++;
+
+                    }
+                } else {
+                    System.out.printf("ERROR: RANGE VIOLATION - Range values not set");
+                }
+                break;
+            }
+
+            case GROUPED:{
+            }
+
+            default:{
+                sdItems    = INVALID;
+                calcMethod = INVALID_CALC_METHOD;
+                System.out.println("ERROR: Standard Deviation Calculation Method either UNIMPLEMENTED, or UNKNOWN");
+                break;
+            }
+        }
 
     }
 
