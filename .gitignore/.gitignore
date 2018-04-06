@@ -25,13 +25,13 @@ public class StDeviation {
     private int[] Data = new int[MAXDATA];
 
     // sets all values to invalid to allow some checking
-    private int    sdItems    = INVALID;
-    private int    sdMinRange = INVALID_RANGE;
-    private int    sdMaxRange = INVALID_RANGE;
-    private int    calcMethod = INVALID_CALC_METHOD;
-    private double sdAve      = INVALID;
-    private double sdVar      = INVALID;
-    private double sdDev      = INVALID;
+    private int sdItems = INVALID;
+    private int sdMinRange = INVALID_RANGE;
+    private int sdMaxRange = INVALID_RANGE;
+    private int calcMethod = INVALID_CALC_METHOD;
+    private double sdAve = INVALID;
+    private double sdVar = INVALID;
+    private double sdDev = INVALID;
 
     // ******************************************************************************
     // ******************************************************************************
@@ -63,54 +63,30 @@ public class StDeviation {
             }
         }
     }
-        // You need to write the code to set the class variable here
-        // you should use a switch/case statement that allows you to
-        // check if "how2calculate" is DISCRETE, FRQTABLE, GROUPED, if
-        // "how2calculate" is not one of these then it must be set to
-        // INVALID_CALC_METHOD
+    // You need to write the code to set the class variable here
+    // you should use a switch/case statement that allows you to
+    // check if "how2calculate" is DISCRETE, FRQTABLE, GROUPED, if
+    // "how2calculate" is not one of these then it must be set to
+    // INVALID_CALC_METHOD
 
 
-    public int getCalcMethod(){
+    public int getCalcMethod() {
         return calcMethod;
     }
 
-    public void setMin(int userMin){
-        switch (userMin) {
-            case DISCRETE: {
-               // sdMinRange = *****************************************************
-                break;
-            }
-            case FRQTABLE: {
-                sdMinRange = MINDATA;
-                break;
-            }
-            default:
-                sdMinRange = INVALID_RANGE;
-                System.out.println("ERROR: Minimum is out of range");
-        }
+    public void setMin(int userMin) {
+        sdMinRange = userMin;
     }
 
-    public int getMin(){
+    public int getMin() {
         return sdMinRange;
     }
 
     public void setMax(int userMax) {
-        switch (userMax) {
-            case DISCRETE: {
-                sdMaxRange = MAXDATA;
-                break;
-            }
-            case FRQTABLE: {
-                sdMaxRange = MAXDATA;
-                break;
-            }
-            default:
-                sdMaxRange = INVALID_RANGE;
-                System.out.println("ERROR: Maximum is out of range");
-        }
+        sdMaxRange = userMax;
     }
 
-    public int getMax(){
+    public int getMax() {
         return sdMaxRange;
     }
 
@@ -125,19 +101,19 @@ public class StDeviation {
     //      Pre-Conditions:
     //          - none
     //
-    public void addNewDataItem(int dataItem){
+    public void addNewDataItem(int dataItem) {
 
         // In this case we have to check if we are adding the first data item.
         // If sdItems = -1 then no data has been previously added so we set
         // the number of items to zero
 
-        if ((sdItems == INVALID)){
+        if ((sdItems == INVALID)) {
             sdItems = 0;
         }
 
-        switch (getCalcMethod()){
+        switch (getCalcMethod()) {
 
-            case DISCRETE:{
+            case DISCRETE: {
 
                 Data[sdItems] = dataItem;
                 sdItems++;
@@ -146,14 +122,14 @@ public class StDeviation {
 
             case FRQTABLE: {
 
-                if ((getMin() != INVALID_RANGE) && (getMax() != INVALID_RANGE)){
+                if ((getMin() != INVALID_RANGE) && (getMax() != INVALID_RANGE)) {
 
-                    if ((dataItem < getMin())|| (dataItem > getMax())){
+                    if ((dataItem < getMin()) || (dataItem > getMax())) {
 
                         System.out.printf("ERROR: RANGE VIOLATION - Data Value ( %5.0 ), User Values: Minimum ( %5.0f ), Maxium ( %5.0f )",
                                 dataItem, (double) getMin(), (double) getMax());
 
-                    } else if ((dataItem < MINDATA) || (dataItem > MAXDATA)){
+                    } else if ((dataItem < MINDATA) || (dataItem > MAXDATA)) {
 
                         System.out.printf("ERROR: RANGE VIOLATION - Data Value ( %5.0 ), System Values: DATAMIN ( %5.0f ), DATAMAX ( %5.0f )",
                                 dataItem, (double) MINDATA, (double) MAXDATA);
@@ -170,11 +146,11 @@ public class StDeviation {
                 break;
             }
 
-            case GROUPED:{
+            case GROUPED: {
             }
 
-            default:{
-                sdItems    = INVALID;
+            default: {
+                sdItems = INVALID;
                 calcMethod = INVALID_CALC_METHOD;
                 System.out.println("ERROR: Standard Deviation Calculation Method either UNIMPLEMENTED, or UNKNOWN");
                 break;
@@ -190,7 +166,7 @@ public class StDeviation {
     //      Pre-Conditions:
     //          - none
     //
-    public int getNumberOfDataItems(){
+    public int getNumberOfDataItems() {
         return sdItems;
     }
 
@@ -201,33 +177,62 @@ public class StDeviation {
     //      Pre-Conditions:
     //          - at least one data has been added
     //
-    public double calcAverage(){
+    public double calcAverage() {
 
-        double total = 0;
+        switch (calcMethod) {
+            case DISCRETE: {
 
-        if (sdItems != INVALID){
+                double total = 0;
 
-            // Add all data values together (recall sdItems is the number of data items in the
-            // Data storage array
-            //
-            for (int i = 0; i < sdItems; i++){
-                total = total +  Data[i];
+                if (sdItems != INVALID) {
+
+                    // Add all data values together (recall sdItems is the number of data items in the
+                    // Data storage array
+                    //
+                    for (int i = 0; i < sdItems; i++) {
+                        total = total + Data[i];
+                    }
+
+                    // calculate the average, the "(double)" below instructs the computer to treat
+                    // the integer value of "sdItems" as a real number
+                    //
+                    sdAve = total / (double) sdItems;
+                } else {
+                    // Pre-Conditions have not been met
+                    sdAve = INVALID;
+                }
+
+                // returns the calculated average
+                break;
             }
+            case FRQTABLE: {
 
-            // calculate the average, the "(double)" below instructs the computer to treat
-            // the integer value of "sdItems" as a real number
-            //
-            sdAve = total / (double) sdItems;
-        }
-        else {
-            // Pre-Conditions have not been met
-            sdAve = INVALID;
+                double productItem;
+                double total = 0;
+
+                if (sdItems != INVALID) {
+
+                    for (int i = 0; i < sdItems; i++) {
+                        productItem = Data[i] * i;
+                        total = total + productItem;
+                    }
+
+                    // calculate the average, the "(double)" below instructs the computer to treat
+                    // the integer value of "sdItems" as a real number
+                    //
+                    sdAve = total / (double) sdItems;
+                } else {
+                    // Pre-Conditions have not been met
+                    sdAve = INVALID;
+                }
+
+                // returns the calculated average
+                break;
+            }
         }
 
-        // returns the calculated average
         return sdAve;
     }
-
     // --------------------------------------------------
     // The following method (function) returns a double precision value which is the Variance of all
     // of the data values. If there is no data, or if the average has not been calculated
@@ -237,40 +242,70 @@ public class StDeviation {
     //          - at least one data has been added
     //          - the average must have been calculated
     //
-    public double calcVariance(){
+    public double calcVariance() {
 
         double total = 0;
         double difference = 0;
         double diffSquared = 0;
+        double frSquared = 0;
+        double n = 0;
 
         // Checks that data entry, and average have been done
         //
-        if ((sdItems != INVALID) || (sdAve != INVALID)){
+        switch (calcMethod) {
+            case DISCRETE: {
+                if ((sdItems != INVALID) || (sdAve != INVALID)){
 
-            // Loop over all data and calculate variance
-            //
-            for (int i = 0; i < sdItems; i++){
+                    // Loop over all data and calculate variance
+                    //
+                    for (int i = 0; i < sdItems; i++){
 
-                difference = (Data[i] - sdAve);
-                diffSquared = Math.pow(difference,2);
-                total = total + diffSquared;
+                        difference = (Data[i] - sdAve);
+                        diffSquared = Math.pow(difference,2);
+                        total = total + diffSquared;
 
-                // The calculation above could have been done on a single line
-                // i.e. total += Math.pow( (Data[i] - sdAve), 2)
-                // but it is easier to understand if done on separate lines.
+                        // The calculation above could have been done on a single line
+                        // i.e. total += Math.pow( (Data[i] - sdAve), 2)
+                        // but it is easier to understand if done on separate lines.
 
+                    }
+
+                    // to calculate the variance we need to divide by the number of data items,
+                    // the "(double)" below instructs the computer to treat the integer value
+                    // of "sdItems" as a real number
+                    //
+                    sdVar = total / (double) sdItems;
+
+                }
+                else {
+                    // Pre-Conditions have not been met
+                    sdVar = INVALID;
+                }
+
+                break;
             }
+            case FRQTABLE: {
+                if ((sdItems != INVALID) || (sdAve != INVALID)){
 
-            // to calculate the variance we need to divide by the number of data items,
-            // the "(double)" below instructs the computer to treat the integer value
-            // of "sdItems" as a real number
-            //
-            sdVar = total / (double) sdItems;
+                    for (int i = 0; i < sdItems; i++){
 
-        }
-        else {
-            // Pre-Conditions have not been met
-            sdVar = INVALID;
+                        difference = (i - sdAve);
+                        diffSquared = Math.pow(difference,2);
+                        frSquared = diffSquared * Data[i];
+                        total = total + frSquared;
+                        n = n + Data[i];
+
+                    }
+
+                    sdVar = total / (double) n;
+
+                }
+                else {
+                    sdVar = INVALID;
+                }
+
+                break;
+            }
         }
 
         return sdVar;
