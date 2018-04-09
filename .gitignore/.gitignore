@@ -1,27 +1,9 @@
 package com.company;
 
-// ---------*---------*---------*---------*
-// The use of static imports is something that should be used carefully.
-// I have only ever used this technique for the project wide constants.
-//
 import static com.company.ProjConstants.*;
 
 public class StDeviation {
 
-    /* ---------*---------*---------*---------*---------*---------*---------*---------*
-    // Class Level Variables
-    // ---------*---------*---------*---------*---------*---------*---------*--------- */
-
-    // As discussed in class we are using a class populated with Project Constants to
-    // ensure help manage the project data. This ensures that each class can access the
-    // constant values, but in the event that a change is needed/required that this will
-    // only need to be made in one location, or file.
-    //
-    // Notice: If I had not done the "static import com.company.ProjConstants.*;" then
-    //         the use of the constant would have been written as:
-    //
-    //         private int[] Data = new int[ProjConstants.MAXDATA];
-    //
     private int[] Data = new int[MAXDATA];
 
     // sets all values to invalid to allow some checking
@@ -43,7 +25,11 @@ public class StDeviation {
     //   - calcAverage    (precondition is that data added, & calculation method is set)
     //   - calcVariance   (precondition is that average calculated, data added, & calculation method is set)
 
-
+/*
+The first step is to set a calculation method so that the user can select if they want to use discrete variables, a frequency table,
+or grouped (although we don't have anything for grouped yet because that wasn't part of the assignment). In order to allow this to
+happen, a switch/case statement must be set up with calcMethod being equal to what is selected. This is a void method.
+ */
     public void setCalcMethod(int how2calculate) {
 
         switch (how2calculate) {
@@ -63,17 +49,14 @@ public class StDeviation {
             }
         }
     }
-    // You need to write the code to set the class variable here
-    // you should use a switch/case statement that allows you to
-    // check if "how2calculate" is DISCRETE, FRQTABLE, GROUPED, if
-    // "how2calculate" is not one of these then it must be set to
-    // INVALID_CALC_METHOD
-
-
+    //the next step is to set up a method that will simply return calcMethod
     public int getCalcMethod() {
         return calcMethod;
     }
-
+/*
+************************************************************************************************************************
+* next, a minimum and maximum range must be set. These is only necessary and will only be used if calcMethod = FRQTABLE
+ */
     public void setMin(int userMin) {
         sdMinRange = userMin;
     }
@@ -95,12 +78,13 @@ public class StDeviation {
     // ******************************************************************************
 
     // --------------------------------------------------
+    //now, we must add a new method for adding and keeping track of data items from the file
     // The following method (procedure) will take a new data item (a parameter)
     // and add it into the 1 Dimensional Array of data values to be used later.
     //
     //      Pre-Conditions:
     //          - none
-    //
+
     public void addNewDataItem(int dataItem) {
 
         // In this case we have to check if we are adding the first data item.
@@ -111,6 +95,14 @@ public class StDeviation {
             sdItems = 0;
         }
 
+        /*
+        now we will make a switch/case statement for adding the data into the array. The case taht we will use in each scenario
+        is dependent on what the user selected in the getCalcMethod. If the CalcMethod is DISCRETE, the data in each slot of the
+        array is equal to one of the data points in the file. If the CalcMethod is FRQTABLE, a prerequisite is that both the minimum
+        and the maximum are within range. If they are not, print that there is a range violation. If it is within range, the value of the
+        indicated (by the file) slot in the array is equal to what the value in the array already is, plus one. This will keep track of
+        frequency.
+         */
         switch (getCalcMethod()) {
 
             case DISCRETE: {
