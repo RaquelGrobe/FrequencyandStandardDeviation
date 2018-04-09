@@ -163,12 +163,15 @@ happen, a switch/case statement must be set up with calcMethod being equal to wh
     }
 
     // --------------------------------------------------
+    // The next step is to calculate the average
     // The following method (function) returns a double precision value which
     // is the average of all of the data values
     //
     //      Pre-Conditions:
     //          - at least one data has been added
+    // This too will require a case/switch statement that is dependent upon what the user selects in the calcMethod method.
     //
+
     public double calcAverage() {
 
         switch (calcMethod) {
@@ -185,7 +188,8 @@ happen, a switch/case statement must be set up with calcMethod being equal to wh
                         total = total + Data[i];
                     }
 
-                    // calculate the average, the "(double)" below instructs the computer to treat
+                    // calculate the average, (the average = the total/the number of items)
+                    // the "(double)" below instructs the computer to treat
                     // the integer value of "sdItems" as a real number
                     //
                     sdAve = total / (double) sdItems;
@@ -194,7 +198,6 @@ happen, a switch/case statement must be set up with calcMethod being equal to wh
                     sdAve = INVALID;
                 }
 
-                // returns the calculated average
                 break;
             }
             case FRQTABLE: {
@@ -203,7 +206,12 @@ happen, a switch/case statement must be set up with calcMethod being equal to wh
                 double total = 0;
 
                 if (sdItems != INVALID) {
-
+            /*
+            Run a for loop only if items have been read from the file.
+            productItem is equal to the number being read multiplied by the frequency of that number in the file.
+            total is equal to the total that has already been calculated (for when the loop has already been run)
+            plus the productItem.
+             */
                     for (int i = 0; i < sdItems; i++) {
                         productItem = Data[i] * i;
                         total = total + productItem;
@@ -218,14 +226,14 @@ happen, a switch/case statement must be set up with calcMethod being equal to wh
                     sdAve = INVALID;
                 }
 
-                // returns the calculated average
                 break;
             }
         }
-
+    //returns the calculated average
         return sdAve;
     }
     // --------------------------------------------------
+    // Now we must calculate the variance using another switch/case statement (dependent on calcMethod selected)
     // The following method (function) returns a double precision value which is the Variance of all
     // of the data values. If there is no data, or if the average has not been calculated
     // then it returns INVALID
@@ -242,17 +250,16 @@ happen, a switch/case statement must be set up with calcMethod being equal to wh
         double frSquared = 0;
         double n = 0;
 
-        // Checks that data entry, and average have been done
-        //
         switch (calcMethod) {
             case DISCRETE: {
                 if ((sdItems != INVALID) || (sdAve != INVALID)){
-
+                    // if statement checks that data entry and average have been done
                     // Loop over all data and calculate variance
                     //
                     for (int i = 0; i < sdItems; i++){
-
+                    //the difference is equal to the data point's difference from the average
                         difference = (Data[i] - sdAve);
+                        //*****************************************************************************************
                         diffSquared = Math.pow(difference,2);
                         total = total + diffSquared;
 
@@ -328,3 +335,4 @@ happen, a switch/case statement must be set up with calcMethod being equal to wh
     }
 
 } // end of class
+
