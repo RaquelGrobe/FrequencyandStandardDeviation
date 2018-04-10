@@ -288,21 +288,29 @@ happen, a switch/case statement must be set up with calcMethod being equal to wh
             }
             case FRQTABLE: {
                 if ((sdItems != INVALID) || (sdAve != INVALID)){
+                //if statement checks that data entry and average have been done
 
                     for (int i = 0; i < sdItems; i++){
-
                         difference = (i - sdAve);
                         diffSquared = Math.pow(difference,2);
+                        
+                        /*
+                        For finding the variance using a frequency table we need to multiply the difference from data point minus
+                        the average by the frequency. Then we do that for all of the data in the array, and add all of those values
+                        together. Finally, we add up all of the frequencies (which will essentially give us the total number of data
+                        items)
+                        */
                         frSquared = diffSquared * Data[i];
                         total = total + frSquared;
                         n = n + Data[i];
 
                     }
-
+                    // the variance is equal to the total divided by the number of data items
                     sdVar = total / (double) n;
 
                 }
                 else {
+                // Pre-conditions have not been met (data entry and/or average have not been done) 
                     sdVar = INVALID;
                 }
 
