@@ -257,15 +257,18 @@ happen, a switch/case statement must be set up with calcMethod being equal to wh
                     // Loop over all data and calculate variance
                     //
                     for (int i = 0; i < sdItems; i++){
-                    //the difference is equal to the data point's difference from the average
+                    
+                    //the difference is equal to the difference of the data point from the average
                         difference = (Data[i] - sdAve);
-                        //*****************************************************************************************
+                        
+                    //the difference to the power of 2
                         diffSquared = Math.pow(difference,2);
+                        
+                    /*
+                    the total is built upon the more the loop is played. It starts at zero, and the diffSquared 
+                    is added for each new data point in the file
+                    */
                         total = total + diffSquared;
-
-                        // The calculation above could have been done on a single line
-                        // i.e. total += Math.pow( (Data[i] - sdAve), 2)
-                        // but it is easier to understand if done on separate lines.
 
                     }
 
